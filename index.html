@@ -8,66 +8,95 @@
 <meta name="description" content="">
 <style>
   :root {
-    --bg:#0d0d12; --card:#16161f; --border:#26263a;
-    --txt:#e8e8f0; --muted:#9a9ab0; --accent:#7c5cff;
-    --price:#4ade80; --gold:#fbbf24;
+    --bg:#0a0a0f; --card:#12121a; --border:#1e1e2e;
+    --txt:#f0f0f5; --muted:#8888a0; --accent:#8b5cf6;
+    --accent2:#c084fc; --price:#34d399; --gold:#fbbf24;
+    --gradient:linear-gradient(135deg,#8b5cf6 0%,#c084fc 50%,#f472b6 100%);
   }
   * { margin:0; padding:0; box-sizing:border-box; }
-  body { background:var(--bg); color:var(--txt); font-family:-apple-system,'Segoe UI',Roboto,sans-serif; padding-bottom:80px; }
-  header { text-align:center; padding:32px 16px 20px; position:relative; }
-  header h1 { font-size:1.9rem; letter-spacing:.06em; background:linear-gradient(90deg,#7c5cff,#c084fc,#f472b6); -webkit-background-clip:text; background-clip:text; color:transparent; }
-  header .by { color:var(--muted); margin-top:6px; font-size:.9rem; }
-  .aviso { max-width:640px; margin:14px auto 0; background:#1c1430; border:1px solid #3b2a6b; border-radius:10px; padding:10px 14px; font-size:.85rem; color:#c4b5fd; }
-  nav { position:sticky; top:0; z-index:10; background:rgba(13,13,18,.92); backdrop-filter:blur(8px); border-bottom:1px solid var(--border); overflow-x:auto; white-space:nowrap; padding:10px 12px; display:flex; gap:8px; -webkit-overflow-scrolling:touch; }
-  nav a { color:var(--muted); text-decoration:none; font-size:.78rem; padding:6px 12px; border-radius:999px; border:1px solid var(--border); flex-shrink:0; }
-  nav a:hover { color:var(--txt); border-color:var(--accent); }
-  section { max-width:1100px; margin:0 auto; padding:28px 16px 8px; }
-  section h2 { font-size:1.25rem; margin-bottom:16px; padding-left:12px; border-left:4px solid var(--accent); letter-spacing:.04em; }
-  h3.sub { font-size:1rem; margin:22px 0 12px; color:#c4b5fd; letter-spacing:.03em; }
-  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:14px; }
-  .card { background:var(--card); border:1px solid var(--border); border-radius:14px; overflow:hidden; transition:transform .15s, border-color .15s; }
-  .card:hover { transform:translateY(-3px); border-color:var(--accent); }
-  .media { position:relative; aspect-ratio:1/1; background:#0a0a10; overflow:hidden; }
-  .media img { width:100%; height:100%; object-fit:cover; display:block; }
-  .media-fallback { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; color:var(--muted); font-size:1.6rem; }
-  .media-fallback small { font-size:.75rem; }
+  body { background:var(--bg); color:var(--txt); font-family:-apple-system,'Segoe UI',Roboto,'Helvetica Neue',sans-serif; padding-bottom:80px; line-height:1.5; }
+  
+  /* HEADER */
+  header { text-align:center; padding:40px 16px 24px; position:relative; overflow:hidden; }
+  header::before { content:''; position:absolute; top:-50%; left:-50%; width:200%; height:200%; background:radial-gradient(circle at center,rgba(139,92,246,.15) 0%,transparent 50%); animation:pulse 4s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:.5} 50%{opacity:1} }
+  header h1 { font-size:2.2rem; letter-spacing:.08em; background:var(--gradient); -webkit-background-clip:text; background-clip:text; color:transparent; position:relative; font-weight:800; }
+  header .by { color:var(--muted); margin-top:8px; font-size:.95rem; position:relative; }
+  .aviso { max-width:640px; margin:16px auto 0; background:rgba(139,92,246,.1); border:1px solid rgba(139,92,246,.3); border-radius:12px; padding:12px 16px; font-size:.88rem; color:#c4b5fd; position:relative; backdrop-filter:blur(10px); }
+  
+  /* NAV */
+  nav { position:sticky; top:0; z-index:100; background:rgba(10,10,15,.95); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); overflow-x:auto; white-space:nowrap; padding:12px 16px; display:flex; gap:8px; -webkit-overflow-scrolling:touch; }
+  nav a { color:var(--muted); text-decoration:none; font-size:.8rem; font-weight:600; padding:8px 14px; border-radius:999px; border:1px solid var(--border); flex-shrink:0; transition:all .2s; }
+  nav a:hover { color:var(--txt); border-color:var(--accent); background:rgba(139,92,246,.1); transform:translateY(-1px); }
+  
+  /* SECTIONS */
+  section { max-width:1200px; margin:0 auto; padding:32px 16px 12px; }
+  section h2 { font-size:1.4rem; margin-bottom:20px; padding-left:14px; border-left:4px solid var(--accent); letter-spacing:.05em; font-weight:700; background:linear-gradient(90deg,var(--accent),var(--accent2)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  h3.sub { font-size:1.05rem; margin:24px 0 14px; color:var(--accent2); letter-spacing:.04em; font-weight:600; }
+  
+  /* GRID & CARDS */
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:16px; }
+  .card { background:var(--card); border:1px solid var(--border); border-radius:16px; overflow:hidden; transition:all .2s; box-shadow:0 4px 20px rgba(0,0,0,.3); }
+  .card:hover { transform:translateY(-4px); border-color:var(--accent); box-shadow:0 8px 30px rgba(139,92,246,.2); }
+  
+  /* MEDIA */
+  .media { position:relative; aspect-ratio:1/1; background:#08080c; overflow:hidden; }
+  .media img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .3s; }
+  .card:hover .media img { transform:scale(1.05); }
+  .media iframe { width:100%; height:100%; border:none; display:block; }
+  .media.video { background:#000; }
+  .media-fallback { display:none; position:absolute; inset:0; flex-direction:column; align-items:center; justify-content:center; gap:6px; color:var(--muted); font-size:1.8rem; background:linear-gradient(135deg,#1a1a2e 0%,#16162a 100%); }
+  .media-fallback small { font-size:.8rem; }
+  .media.sem-media .media-fallback { display:flex; }
   .media.sem-media img { display:none; }
-  .info { padding:14px; }
-  .info h3 { font-size:.95rem; line-height:1.35; margin-bottom:6px; }
-  .info p { color:var(--muted); font-size:.8rem; margin-bottom:10px; }
-  table { width:100%; border-collapse:collapse; font-size:.85rem; }
-  th { text-align:left; color:var(--muted); font-weight:600; font-size:.72rem; text-transform:uppercase; letter-spacing:.05em; padding:4px 0; border-bottom:1px solid var(--border); }
-  td { padding:5px 0; border-bottom:1px solid #1e1e2e; }
+  
+  /* INFO */
+  .info { padding:16px; }
+  .info h3 { font-size:1rem; line-height:1.4; margin-bottom:8px; font-weight:600; }
+  .info p { color:var(--muted); font-size:.82rem; margin-bottom:12px; line-height:1.4; }
+  
+  /* TABLES */
+  table { width:100%; border-collapse:collapse; font-size:.88rem; }
+  th { text-align:left; color:var(--muted); font-weight:600; font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; padding:6px 0; border-bottom:1px solid var(--border); }
+  td { padding:8px 0; border-bottom:1px solid rgba(30,30,46,.5); }
   tr:last-child td { border-bottom:none; }
-  .price { color:var(--price); font-weight:700; text-align:right; white-space:nowrap; }
+  .price { color:var(--price); font-weight:700; text-align:right; white-space:nowrap; font-size:.92rem; }
   th:last-child { text-align:right; }
-  .badge { font-size:.6rem; font-weight:800; padding:2px 7px; border-radius:999px; vertical-align:middle; letter-spacing:.05em; }
-  .badge.novo { background:#14532d; color:#4ade80; }
-  .badge.esgotado { background:#7f1d1d; color:#fca5a5; }
-  .milhas { max-width:1100px; margin:0 auto; padding:28px 16px; }
-  .milhas h2 { font-size:1.25rem; margin-bottom:6px; padding-left:12px; border-left:4px solid var(--gold); }
-  .milhas .nota { color:var(--muted); font-size:.82rem; margin-bottom:14px; }
-  .envios { max-width:1100px; margin:0 auto; padding:10px 16px 30px; }
-  .envios h2 { font-size:1.25rem; margin-bottom:14px; padding-left:12px; border-left:4px solid var(--accent); }
-  .envios ul { list-style:none; display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px; }
-  .envios li { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:12px 14px; font-size:.85rem; }
-  .envios li b { color:var(--txt); }
-  .envios li span { color:var(--muted); display:block; margin-top:3px; font-size:.78rem; }
-  .reship { max-width:1100px; margin:0 auto 30px; padding:0 16px; }
-  .reship p { background:#2a1215; border:1px solid #7f1d1d; color:#fca5a5; text-align:center; padding:12px; border-radius:10px; font-weight:700; letter-spacing:.03em; }
-  footer { text-align:center; color:var(--muted); font-size:.8rem; padding:20px 16px 30px; }
-  .envios h3.sub { font-size:1rem; margin:20px 0 10px; color:#c4b5fd; letter-spacing:.03em; }
-  table.frete { width:100%; max-width:520px; border-collapse:collapse; font-size:.88rem; background:var(--card); border:1px solid var(--border); border-radius:12px; overflow:hidden; }
-  table.frete th { text-align:left; color:var(--muted); font-weight:600; font-size:.72rem; text-transform:uppercase; letter-spacing:.05em; padding:10px 14px; border-bottom:1px solid var(--border); background:#12121c; }
-  table.frete td { padding:9px 14px; border-bottom:1px solid #1e1e2e; }
+  .price small.total { display:block; font-size:.72rem; color:var(--muted); font-weight:600; margin-top:3px; }
+  
+  /* BADGES */
+  .badge { font-size:.62rem; font-weight:800; padding:3px 8px; border-radius:999px; vertical-align:middle; letter-spacing:.06em; margin-left:6px; }
+  .badge.novo { background:rgba(52,211,153,.15); color:var(--price); border:1px solid rgba(52,211,153,.3); }
+  .badge.esgotado { background:rgba(239,68,68,.15); color:#fca5a5; border:1px solid rgba(239,68,68,.3); }
+  
+  /* MILHAS */
+  .milhas { max-width:1200px; margin:0 auto; padding:32px 16px; }
+  .milhas h2 { font-size:1.4rem; margin-bottom:8px; padding-left:14px; border-left:4px solid var(--gold); background:linear-gradient(90deg,var(--gold),#f59e0b); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .milhas .nota { color:var(--muted); font-size:.85rem; margin-bottom:16px; }
+  
+  /* ENVIOS */
+  .envios { max-width:1200px; margin:0 auto; padding:12px 16px 32px; }
+  .envios h2 { font-size:1.4rem; margin-bottom:16px; padding-left:14px; border-left:4px solid var(--accent); background:linear-gradient(90deg,var(--accent),var(--accent2)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .envios ul { list-style:none; display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:12px; }
+  .envios li { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px 16px; font-size:.88rem; transition:all .2s; }
+  .envios li:hover { border-color:var(--accent); transform:translateY(-2px); }
+  .envios li b { color:var(--txt); display:block; margin-bottom:4px; }
+  .envios li span { color:var(--muted); display:block; font-size:.8rem; }
+  
+  /* RESHIP */
+  .reship { max-width:1200px; margin:0 auto 32px; padding:0 16px; }
+  .reship p { background:rgba(239,68,68,.08); border:1px solid rgba(239,68,68,.3); color:#fca5a5; text-align:center; padding:14px 16px; border-radius:12px; font-weight:700; letter-spacing:.04em; backdrop-filter:blur(10px); }
+  
+  /* FOOTER */
+  footer { text-align:center; color:var(--muted); font-size:.82rem; padding:24px 16px 32px; }
+  
+  /* TABELA FRETE */
+  .envios h3.sub { font-size:1.05rem; margin:22px 0 12px; color:var(--accent2); letter-spacing:.04em; }
+  table.frete { width:100%; max-width:540px; border-collapse:collapse; font-size:.9rem; background:var(--card); border:1px solid var(--border); border-radius:14px; overflow:hidden; }
+  table.frete th { text-align:left; color:var(--muted); font-weight:600; font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; padding:12px 16px; border-bottom:1px solid var(--border); background:rgba(139,92,246,.05); }
+  table.frete td { padding:10px 16px; border-bottom:1px solid rgba(30,30,46,.5); }
   table.frete tr:last-child td { border-bottom:none; }
-  .envios ul.extra { list-style:none; display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px; margin-top:18px; }
-  h3.sub small.subsub {{ display:block; font-size:.78rem; color:var(--muted); font-weight:600; margin-top:2px; letter-spacing:.02em; }}
-
-  .media iframe {{ width:100%; height:100%; border:none; display:block; }}
-  .media.video {{ background:#000; }}
-
-  .price small.total {{ display:block; font-size:.7rem; color:var(--muted); font-weight:600; margin-top:2px; }}
+  .envios ul.extra { list-style:none; display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:12px; margin-top:20px; }
 </style>
 </head>
 <body>
@@ -100,7 +129,7 @@
           <p>Qualidade top de linha.</p>
           <table>
             <thead><tr><th>Quantidade</th><th>Preço</th></tr></thead>
-            <tbody><tr><td>100g</td><td class="price">R$ 16,00/un<br><small class="total">Total: R$ 1.600,00</small></td></tr><tr><td>50g</td><td class="price">R$ 18,00/un<br><small class="total">Total: R$ 900,00</small></td></tr><tr><td>25g a 49g</td><td class="price">R$ 20,00/un<br><small class="total">Total: R$ 500,00</small></td></tr></tbody>
+            <tbody><tr><td>100g</td><td class="price">R$ 16,00/g<br><small class="total">Total: R$ 1.600,00</small></td></tr><tr><td>50g</td><td class="price">R$ 18,00/g<br><small class="total">Total: R$ 900,00</small></td></tr><tr><td>25g a 49g</td><td class="price">R$ 20,00/g<br><small class="total">Total: R$ 500,00</small></td></tr></tbody>
           </table>
         </div>
       </div></div>
@@ -119,7 +148,7 @@
           <p>Qualidade top pra um comercial.</p>
           <table>
             <thead><tr><th>Quantidade</th><th>Preço</th></tr></thead>
-            <tbody><tr><td>100g</td><td class="price">R$ 48,00/un<br><small class="total">Total: R$ 4.800,00</small></td></tr><tr><td>50g</td><td class="price">R$ 49,00/un<br><small class="total">Total: R$ 2.450,00</small></td></tr></tbody>
+            <tbody><tr><td>100g</td><td class="price">R$ 48,00/g<br><small class="total">Total: R$ 4.800,00</small></td></tr><tr><td>50g</td><td class="price">R$ 49,00/g<br><small class="total">Total: R$ 2.450,00</small></td></tr></tbody>
           </table>
         </div>
       </div>
@@ -134,7 +163,7 @@
           <p>Qualidade e satisfação garantida ✅</p>
           <table>
             <thead><tr><th>Quantidade</th><th>Preço</th></tr></thead>
-            <tbody><tr><td>10g</td><td class="price">R$ 70,00/un<br><small class="total">Total: R$ 700,00</small></td></tr><tr><td>25g</td><td class="price">R$ 62,00/un<br><small class="total">Total: R$ 1.550,00</small></td></tr><tr><td>50g</td><td class="price">R$ 60,00/un<br><small class="total">Total: R$ 3.000,00</small></td></tr><tr><td>100g</td><td class="price">R$ 58,00/un<br><small class="total">Total: R$ 5.800,00</small></td></tr></tbody>
+            <tbody><tr><td>10g</td><td class="price">R$ 70,00/g<br><small class="total">Total: R$ 700,00</small></td></tr><tr><td>25g</td><td class="price">R$ 62,00/g<br><small class="total">Total: R$ 1.550,00</small></td></tr><tr><td>50g</td><td class="price">R$ 60,00/g<br><small class="total">Total: R$ 3.000,00</small></td></tr><tr><td>100g</td><td class="price">R$ 58,00/g<br><small class="total">Total: R$ 5.800,00</small></td></tr></tbody>
           </table>
         </div>
       </div>
@@ -149,7 +178,7 @@
           <p>Qualidade e satisfação garantida ✅</p>
           <table>
             <thead><tr><th>Quantidade</th><th>Preço</th></tr></thead>
-            <tbody><tr><td>10g</td><td class="price">R$ 70,00/un<br><small class="total">Total: R$ 700,00</small></td></tr><tr><td>25g</td><td class="price">R$ 62,00/un<br><small class="total">Total: R$ 1.550,00</small></td></tr><tr><td>50g</td><td class="price">R$ 60,00/un<br><small class="total">Total: R$ 3.000,00</small></td></tr><tr><td>100g</td><td class="price">R$ 58,00/un<br><small class="total">Total: R$ 5.800,00</small></td></tr></tbody>
+            <tbody><tr><td>10g</td><td class="price">R$ 70,00/g<br><small class="total">Total: R$ 700,00</small></td></tr><tr><td>25g</td><td class="price">R$ 62,00/g<br><small class="total">Total: R$ 1.550,00</small></td></tr><tr><td>50g</td><td class="price">R$ 60,00/g<br><small class="total">Total: R$ 3.000,00</small></td></tr><tr><td>100g</td><td class="price">R$ 58,00/g<br><small class="total">Total: R$ 5.800,00</small></td></tr></tbody>
           </table>
         </div>
       </div>
@@ -164,7 +193,7 @@
           <p>Qualidade e satisfação garantida ✅</p>
           <table>
             <thead><tr><th>Quantidade</th><th>Preço</th></tr></thead>
-            <tbody><tr><td>10g</td><td class="price">R$ 70,00/un<br><small class="total">Total: R$ 700,00</small></td></tr><tr><td>25g</td><td class="price">R$ 62,00/un<br><small class="total">Total: R$ 1.550,00</small></td></tr><tr><td>50g</td><td class="price">R$ 60,00/un<br><small class="total">Total: R$ 3.000,00</small></td></tr><tr><td>100g</td><td class="price">R$ 58,00/un<br><small class="total">Total: R$ 5.800,00</small></td></tr></tbody>
+            <tbody><tr><td>10g</td><td class="price">R$ 70,00/g<br><small class="total">Total: R$ 700,00</small></td></tr><tr><td>25g</td><td class="price">R$ 62,00/g<br><small class="total">Total: R$ 1.550,00</small></td></tr><tr><td>50g</td><td class="price">R$ 60,00/g<br><small class="total">Total: R$ 3.000,00</small></td></tr><tr><td>100g</td><td class="price">R$ 58,00/g<br><small class="total">Total: R$ 5.800,00</small></td></tr></tbody>
           </table>
         </div>
       </div>
@@ -173,25 +202,11 @@
           <p>Variações: LCG · BLACK · BUBBA KUSH — qualidade e satisfação garantida ✅</p>
           <table>
             <thead><tr><th>Quantidade</th><th>Preço</th></tr></thead>
-            <tbody><tr><td>10g</td><td class="price">R$ 70,00/un<br><small class="total">Total: R$ 700,00</small></td></tr><tr><td>25g</td><td class="price">R$ 62,00/un<br><small class="total">Total: R$ 1.550,00</small></td></tr><tr><td>50g</td><td class="price">R$ 60,00/un<br><small class="total">Total: R$ 3.000,00</small></td></tr><tr><td>100g</td><td class="price">R$ 58,00/un<br><small class="total">Total: R$ 5.800,00</small></td></tr></tbody>
+            <tbody><tr><td>10g</td><td class="price">R$ 70,00/g<br><small class="total">Total: R$ 700,00</small></td></tr><tr><td>25g</td><td class="price">R$ 62,00/g<br><small class="total">Total: R$ 1.550,00</small></td></tr><tr><td>50g</td><td class="price">R$ 60,00/g<br><small class="total">Total: R$ 3.000,00</small></td></tr><tr><td>100g</td><td class="price">R$ 58,00/g<br><small class="total">Total: R$ 5.800,00</small></td></tr></tbody>
           </table>
         </div>
       </div>
-      <div class="card">
-        <div class="media" data-media="SUBSTITUA_AQUI_PLACA_FINA_MELT">
-          <img src="https://drive.google.com/thumbnail?id=11ZgaJguqp0Ten41TzGZf3k8-gB_EI2yc&sz=w1000" alt="PLACA FINA MELT" loading="lazy"
-               onerror="this.parentElement.classList.add('sem-media'); this.remove();">
-          <div class="media-fallback">📷<br><small>foto em breve</small></div>
-        </div>
-        <div class="info">
-          <h3>🧊 PLACA FINA MELT </h3>
-          <p>Qualidade e satisfação garantida ✅</p>
-          <table>
-            <thead><tr><th>Quantidade</th><th>Preço</th></tr></thead>
-            <tbody><tr><td>10g</td><td class="price">R$ 62,00/un<br><small class="total">Total: R$ 620,00</small></td></tr><tr><td>25g</td><td class="price">R$ 60,00/un<br><small class="total">Total: R$ 1.500,00</small></td></tr><tr><td>50g</td><td class="price">R$ 58,00/un<br><small class="total">Total: R$ 2.900,00</small></td></tr><tr><td>100g</td><td class="price">R$ 57,00/un<br><small class="total">Total: R$ 5.700,00</small></td></tr></tbody>
-          </table>
-        </div>
-      </div></div>
+      </div>
     </section>
     <section id="dry">
       <h2>🍫 DRY</h2>
@@ -674,7 +689,7 @@
           <p>Pouquíssima quantidade disponível 🚨 Mais de 100g não diminui o valor.</p>
           <table>
             <thead><tr><th>Quantidade</th><th>Preço</th></tr></thead>
-            <tbody><tr><td>10g</td><td class="price">R$ 60,00/un<br><small class="total">Total: R$ 600,00</small></td></tr><tr><td>25g</td><td class="price">R$ 55,00/un<br><small class="total">Total: R$ 1.375,00</small></td></tr><tr><td>50g</td><td class="price">R$ 52,00/un<br><small class="total">Total: R$ 2.600,00</small></td></tr><tr><td>100g</td><td class="price">R$ 50,00/un<br><small class="total">Total: R$ 5.000,00</small></td></tr></tbody>
+            <tbody><tr><td>10g</td><td class="price">R$ 60,00/g<br><small class="total">Total: R$ 600,00</small></td></tr><tr><td>25g</td><td class="price">R$ 55,00/g<br><small class="total">Total: R$ 1.375,00</small></td></tr><tr><td>50g</td><td class="price">R$ 52,00/g<br><small class="total">Total: R$ 2.600,00</small></td></tr><tr><td>100g</td><td class="price">R$ 50,00/g<br><small class="total">Total: R$ 5.000,00</small></td></tr></tbody>
           </table>
         </div>
       </div>
@@ -689,7 +704,7 @@
           
           <table>
             <thead><tr><th>Quantidade</th><th>Preço</th></tr></thead>
-            <tbody><tr><td>10g</td><td class="price">R$ 40,00/un<br><small class="total">Total: R$ 400,00</small></td></tr><tr><td>25g</td><td class="price">R$ 35,00/un<br><small class="total">Total: R$ 875,00</small></td></tr><tr><td>50g</td><td class="price">R$ 30,00/un<br><small class="total">Total: R$ 1.500,00</small></td></tr><tr><td>100g</td><td class="price">R$ 28,00/un<br><small class="total">Total: R$ 2.800,00</small></td></tr></tbody>
+            <tbody><tr><td>10g</td><td class="price">R$ 40,00/g<br><small class="total">Total: R$ 400,00</small></td></tr><tr><td>25g</td><td class="price">R$ 35,00/g<br><small class="total">Total: R$ 875,00</small></td></tr><tr><td>50g</td><td class="price">R$ 30,00/g<br><small class="total">Total: R$ 1.500,00</small></td></tr><tr><td>100g</td><td class="price">R$ 28,00/g<br><small class="total">Total: R$ 2.800,00</small></td></tr></tbody>
           </table>
         </div>
       </div></div>
@@ -714,7 +729,7 @@
       </div>
       <div class="card">
         <div class="media" data-media="MDA_300MG_ABACAXI">
-          <img src="https://drive.google.com/thumbnail?id=1LZ7g-dLaC468JpH2UbP0Z9HjxWWv-kfC&sz=w1000" alt="MDA 300mg Abacaxi" loading="lazy"
+          <img src="assets/mda-abacaxi.jpeg" alt="MDA 300mg Abacaxi" loading="lazy"
                onerror="this.parentElement.classList.add('sem-media'); this.remove();">
           <div class="media-fallback">📷<br><small>foto em breve</small></div>
         </div>
@@ -810,7 +825,7 @@
       <tr><td>Tocantins / Manaus</td><td class="price">R$ 110,00/un<br><small class="total">Total: R$ 110,00</small></td></tr>
       <tr><td>Nordeste</td><td class="price">R$ 120,00/un<br><small class="total">Total: R$ 120,00</small></td></tr>
       <tr><td>Norte</td><td class="price">R$ 130,00/un<br><small class="total">Total: R$ 130,00</small></td></tr>
-      <tr><td>Carta registrada 🐢</td><td class="price">R$ 35,00/un<br><small class="total">Total: R$ 35,00</small></td></tr>
+      <tr><td>Carta registrada 🐢</td><td class="price">R$ 35,00/g<br><small class="total">Total: R$ 35,00</small></td></tr>
     </tbody>
   </table>
 

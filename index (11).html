@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loja</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="">
+<style>
+  :root {
+    --bg:#0d0d12; --card:#16161f; --border:#26263a;
+    --txt:#e8e8f0; --muted:#9a9ab0; --accent:#7c5cff;
+    --price:#4ade80; --gold:#fbbf24;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bg); color:var(--txt); font-family:-apple-system,'Segoe UI',Roboto,sans-serif; padding-bottom:80px; }
+  header { text-align:center; padding:32px 16px 20px; position:relative; }
+  header h1 { font-size:1.9rem; letter-spacing:.06em; background:linear-gradient(90deg,#7c5cff,#c084fc,#f472b6); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  header .by { color:var(--muted); margin-top:6px; font-size:.9rem; }
+  .aviso { max-width:640px; margin:14px auto 0; background:#1c1430; border:1px solid #3b2a6b; border-radius:10px; padding:10px 14px; font-size:.85rem; color:#c4b5fd; }
+  nav { position:sticky; top:0; z-index:10; background:rgba(13,13,18,.92); backdrop-filter:blur(8px); border-bottom:1px solid var(--border); overflow-x:auto; white-space:nowrap; padding:10px 12px; display:flex; gap:8px; -webkit-overflow-scrolling:touch; }
+  nav a { color:var(--muted); text-decoration:none; font-size:.78rem; padding:6px 12px; border-radius:999px; border:1px solid var(--border); flex-shrink:0; }
+  nav a:hover { color:var(--txt); border-color:var(--accent); }
+  section { max-width:1100px; margin:0 auto; padding:28px 16px 8px; }
+  section h2 { font-size:1.25rem; margin-bottom:16px; padding-left:12px; border-left:4px solid var(--accent); letter-spacing:.04em; }
+  h3.sub { font-size:1rem; margin:22px 0 12px; color:#c4b5fd; letter-spacing:.03em; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:14px; }
+  .card { background:var(--card); border:1px solid var(--border); border-radius:14px; overflow:hidden; transition:transform .15s, border-color .15s; }
+  .card:hover { transform:translateY(-3px); border-color:var(--accent); }
+  .media { position:relative; aspect-ratio:1/1; background:#0a0a10; overflow:hidden; }
+  .media img { width:100%; height:100%; object-fit:cover; display:block; }
+  .media-fallback { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; color:var(--muted); font-size:1.6rem; }
+  .media-fallback small { font-size:.75rem; }
+  .media.sem-media img { display:none; }
+  .info { padding:14px; }
+  .info h3 { font-size:.95rem; line-height:1.35; margin-bottom:6px; }
+  .info p { color:var(--muted); font-size:.8rem; margin-bottom:10px; }
+  table { width:100%; border-collapse:collapse; font-size:.85rem; }
+  th { text-align:left; color:var(--muted); font-weight:600; font-size:.72rem; text-transform:uppercase; letter-spacing:.05em; padding:4px 0; border-bottom:1px solid var(--border); }
+  td { padding:5px 0; border-bottom:1px solid #1e1e2e; }
+  tr:last-child td { border-bottom:none; }
+  .price { color:var(--price); font-weight:700; text-align:right; white-space:nowrap; }
+  th:last-child { text-align:right; }
+  .badge { font-size:.6rem; font-weight:800; padding:2px 7px; border-radius:999px; vertical-align:middle; letter-spacing:.05em; }
+  .badge.novo { background:#14532d; color:#4ade80; }
+  .badge.esgotado { background:#7f1d1d; color:#fca5a5; }
+  .milhas { max-width:1100px; margin:0 auto; padding:28px 16px; }
+  .milhas h2 { font-size:1.25rem; margin-bottom:6px; padding-left:12px; border-left:4px solid var(--gold); }
+  .milhas .nota { color:var(--muted); font-size:.82rem; margin-bottom:14px; }
+  .envios { max-width:1100px; margin:0 auto; padding:10px 16px 30px; }
+  .envios h2 { font-size:1.25rem; margin-bottom:14px; padding-left:12px; border-left:4px solid var(--accent); }
+  .envios ul { list-style:none; display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px; }
+  .envios li { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:12px 14px; font-size:.85rem; }
+  .envios li b { color:var(--txt); }
+  .envios li span { color:var(--muted); display:block; margin-top:3px; font-size:.78rem; }
+  .reship { max-width:1100px; margin:0 auto 30px; padding:0 16px; }
+  .reship p { background:#2a1215; border:1px solid #7f1d1d; color:#fca5a5; text-align:center; padding:12px; border-radius:10px; font-weight:700; letter-spacing:.03em; }
+  footer { text-align:center; color:var(--muted); font-size:.8rem; padding:20px 16px 30px; }
+  .envios h3.sub { font-size:1rem; margin:20px 0 10px; color:#c4b5fd; letter-spacing:.03em; }
+  table.frete { width:100%; max-width:520px; border-collapse:collapse; font-size:.88rem; background:var(--card); border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+  table.frete th { text-align:left; color:var(--muted); font-weight:600; font-size:.72rem; text-transform:uppercase; letter-spacing:.05em; padding:10px 14px; border-bottom:1px solid var(--border); background:#12121c; }
+  table.frete td { padding:9px 14px; border-bottom:1px solid #1e1e2e; }
+  table.frete tr:last-child td { border-bottom:none; }
+  .envios ul.extra { list-style:none; display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px; margin-top:18px; }
+  h3.sub small.subsub {{ display:block; font-size:.78rem; color:var(--muted); font-weight:600; margin-top:2px; letter-spacing:.02em; }}
+
+  .media iframe {{ width:100%; height:100%; border:none; display:block; }}
+  .media.video {{ background:#000; }}
+
+  .price small.total {{ display:block; font-size:.7rem; color:var(--muted); font-weight:600; margin-top:2px; }}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>✦ CATÁLOGO ✦</h1>
+  <div class="by">By: Zendaya 💋</div>
+  <div class="aviso">📦 Envios fixos às <b>terças e quintas</b>, saindo de SP.</div>
+</header>
+
+<nav>
+  <a href="#flor">🪻 FLORES</a><a href="#ice">🧊 ICE</a><a href="#dry">🍫 DRY</a><a href="#lsd">💊 LSD</a><a href="#md">💎 M.D</a><a href="#balas">🍬 BALAS</a>
+  <a href="#balasmdma">🍬 BALAS DE M.D.M.A</a>
+  <a href="#milhas">🎫 MILHAS</a>
+  <a href="#envios">🚚 ENVIOS</a>
+</nav>
+
+
+    <section id="flor">
+      <h2>🪻 FLORES</h2>
+      <div class="grid">
+      <div class="card">
+        <div class="media" data-media="SUBSTITUA_AQUI_FLOR_OUTDOOR_A+">
+          <img src="https://drive.google.com/thumbnail?id=1_3d8NQZfOcF7bNuaIYSVEzvAT51ET0Fl&sz=w1000" alt="FLOR Outdoor A+" loading="lazy"
+               onerror="this.parentElement.classList.add('sem-media'); this.remove();">
+          <div class="media-fallback">📷<br><small>foto em breve</small></div>
+        </div>
+        <div class="info">
+          <h3>🪻 FLOR Outdoor A+ </h3>
+          <p>Qualidade top de linha.</p>
+          <table>
+            <thead><tr><th>Quantidade</th><th>Preço</th></tr></thead>
+            <tbody><tr><td>100g</td><td class="price">R$ 16,00/un<br><small class="total">Total: R$ 1.600,00</small></td></tr><tr><td>50g</td><td class="price">R$ 18,00/un<br><small class="total">Total: R$ 900,00</small></td></tr><tr><td>25g a 49g</td><td class="price">R$ 20,00/un<br><small class="total">Total: R$ 500,00</small></td></tr></tbody>
+          </table>
+        </div>
+      </div></div>
+    </section>
+    <section id="ice">
+      <h2>🧊 ICE</h2>
+      <div class="grid">
+      <div class="card">
+        <div class="media" data-media="SUBSTITUA_AQUI_COMERCIAL_A">
+          <img src="https://drive.google.com/thumbnail?id=1CWyV4tC5FYedXauoAO2GbD8N9adfBZAq&sz=w1000" alt="COMERCIAL A" loading="lazy"
+               onerror="this.parentElement.classList.add('sem-media'); this.remove();">
+          <div class="media-fallback">📷<br><small>foto em breve</small></div>
+        </div>
+        <div class="info">
+          <h3>🧊 COMERCIAL A </h3>
+          <p>Qualidade top pra um comercial.</p>
+          <table>
+            <thead><tr><th>Quantidade</th><th>Preço</th></tr></thead>
+            <tbody><tr><td>100g</td><td class="price">R$ 48,00/un<br><small class="total">Total: R$ 4.800,00</small></td></tr><tr><td>50g</td><td class="price">R$ 49,00/un<br><small class="total">Total: R$ 2.450,00</small></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="media" data-media="COLD_PRESS_LCG">
+          <img src="https://drive.google.com/thumbnail?id=1-jdRcxFo3rh0ew8xcXH-B_8KoHnTsQVD&sz=w1000" alt="Cold Press LCG" loading="lazy"
+               onerror="this.parentElement.classList.add('sem-media'); this.remove();">
+          <div class="media-fallback">📷<br><small>foto em breve</small></div>
+        </div>
+        <div class="info">
+          <h3>🥶 COLD PRESS — LCG</h3>
+          <p>Qualidade e satisfação garantida ✅</p>
+          <table>
+            <thead><tr><th>Quantidade</th><th>Preço</th></tr></thead>
+            <tbody><tr><td>10g</td><td class="price">R$ 70,00/un<br><small class="total">Total: R$ 700,00</small></td></tr><tr><td>25g</td><td class="price">R$ 62,00/un<br><small class="total">Total: R$ 1.550,00</small></td></tr><tr><td>50g</td><td class="price">R$ 60,00/un<br><small class="total">Total: R$ 3.000,00</small></td></tr><tr><td>100g</td><td class="price">R$ 58,00/un<br><small class="total">Total: R$ 5.800,00</small></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="media" data-media="COLD_PRESS_BLACK">
+          <img src="https://drive.google.com/thumbnail?id=1NAPwcCkOM0Tthcgw5E4M6qUmilABY-On&sz=w1000" alt="Cold Press Black" loading="lazy"
+               onerror="this.parentElement.classList.add('sem-media'); this.remove();">
+          <div class="media-fallback">📷<br><small>foto em breve</small></div>
+        </div>
+        <div class="info">
+          <h3>🥶 COLD PRESS — BLACK</h3>
+          <p>Qualidade e satisfação garantida ✅</p>
+          <table>
+            <thead><tr><th>Quantidade</th><th>Preço</th></tr></thead>
+            <tbody><tr><td>10g</td><td class="price">R$ 70,00/un<br><small class="total">Total: R$ 700,00</small></td></tr><tr><td>25g</td><td class="price">R$ 62,00/un<br><small class="total">Total: R$ 1.550,00</small></td></tr><tr><td>50g</td><td class="price">R$ 60,00/un<br><small class="total">Total: R$ 3.000,00</small></td></tr><tr><td>100g</td><td class="price">R$ 58,00/un<br><small class="total">Total: R$ 5.800,00</small></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="media" data-media="COLD_PRESS_BUBBA_KUSH">
+          <img src="https://drive.google.com/thumbnail?id=1Nta9i0QAM6WUttvWaW3ahh1cVl85-goT&sz=w1000" alt="Cold Press Bubba Kush" loading="lazy"
+               onerror="this.parentElement.classList.add('sem-media'); this.remove();">
+          <div class="media-fallback">📷<br><small>foto em breve</small></div>
+        </div>
+        <div class="info">
+          <h3>🥶 COLD PRESS — BUBBA KUSH</h3>
+          <p>Qualidade e satisfação garantida ✅</p>
+          <table>
+            <thead><tr><th>Quantidade</th><th>Preço</th></tr></thead>
+            <tbody><tr><td>10g</td><td class="price">R$ 70,00/un<br><small class="total">Total: R$ 700,00</small></td></tr><tr><td>25g</td><td class="price">R$ 62,00/un<br><small class="total">Total: R$ 1.550,00</small></td></tr><tr><td>50g</td><td class="price">R$ 60,00/un<br><small class="total">Total: R$ 3.000,00</small></td></tr><tr><td>100g</td><td class="price">R$ 58,00/un<br><small class="total">Total: R$ 5.800,00</small></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+        <div class="info">
+          <h3>🥶 COLD PRESS </h3>
+          <p>Variações: LCG · BLACK · BUBBA KUSH — qualidade e satisfação garantida ✅</p>
+          <table>
+            <thead><tr><th>Quantidade</th><th>Preço</th></tr></thead>
+            <tbody><tr><td>10g</td><td class="price">R$ 70,00/un<br><small class="total">Total: R$ 700,00</small></td></tr><tr><td>25g</td><td class="price">R$ 62,00/un<br><small class="total">Total: R$ 1.550,00</small></td></tr><tr><td>50g</td><td class="price">R$ 60,00/un<br><small class="total">Total: R$ 3.000,00</small></td></tr><tr><td>100g</td><td class="price">R$ 58,00/un<br><small class="total">Total: R$ 5.800,00</small></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="media" data-media="SUBSTITUA_AQUI_PLACA_FINA_MELT">
+          <img src="https://drive.google.com/thumbnail?id=11ZgaJguqp0Ten41TzGZf3k8-gB_EI2yc&sz=w1000" alt="PLACA FINA MELT" loading="lazy"
+               onerror="this.parentElement.classList.add('sem-media'); this.remove();">
+          <div class="media-fallback">📷<br><small>foto em breve</small></div>
+        </div>
+        <div class="info">
+          <h3>🧊 PLACA FINA MELT </h3>
+          <p>Qualidade e satisfação garantida ✅</p>
+          <table>
+            <thead><tr><th>Quantidade</th><th>Preço</th></tr></thead>
+            <tbody><tr><td>10g</td><td class="price">R$ 62,00/un<br><small class="total">Total: R$ 620,00</small></td></tr><tr><td>25g</td><td class="price">R$ 60,00/un<br><small class="total">Total: R$ 1.500,00</small></td></tr><tr><td>50g</td><td class="price">R$ 58,00/un<br><small class="total">Total: R$ 2.900,00</small></td></tr><tr><td>100g</td><td class="price">R$ 57,00/un<br><small class="total">Total: R$ 5.700,00</small></td></tr></tbody>
+          </table>
+        </div>
+      </div></div>
+    </section>
+    <section id="dry">
+      <h2>🍫 DRY</h2>
+      <div class="grid">
+      <div class="card">
+        <div class="media" data-media="SUBSTITUA_AQUI_KIT_KAT_ORIGINAL">
+          <img src="https://drive.google.com/thumbnail?id=1MM8FZU4Yp_TXBJzjCNVM1wKwcpXfj1mX&sz=w1000" alt="KIT KAT ORIGINAL" loading="lazy"
+               onerror="this.parentElement.classList.add('sem-media'); this.remove();">
+          <div class="media-fallback">📷<br><small>foto em breve</small></div>
+        </div>
+        <div class="info">
+          <h3>🍫 KIT KAT ORIGINAL </h3>
+          <p>Placa original.</p>
+          <table>
+            <thead><tr><th>Quantidade</th><th>Preço</th></tr></thead>
+            <tbody><tr><td>1 Placa</td><td class="price">R$ 2.800,00/un<br><small class="total">Total: R$ 2.800,00</small></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="media" data-media="SUBSTITUA_AQUI_DUPLO">
+          <img src="https://drive.google.com/thumbnail?id=1zfqcXf7T0Nchq77c4d7kaJ1s25eErtN4&sz=w1000" alt="DUPLO" loading="lazy"
+               onerror="this.parentElement.classList.add('sem-media'); this.remove();">
+          <div class="media-fallback">📷<br><small>foto em breve</small></div>
+        </div>
+        <div class="info">
+          <h3>🍫 DUPLO </h3>
+          <p>Placa dupla.</p>
+          <table>
+            <thead><tr><th>Quantidade</th><th>Preço</th></tr></thead>
+            <tbody><tr><td>1 Placa</td><td class="price">R$ 2.550,00/un<br><small class="total">Total: R$ 2.550,00</small></td></tr></tbody>
+          </table>
+        </div>
+      </div></div>
+    </section>
+    <section id="lsd">
+      <h2>💊 LSD</h2>
+      
+      <h3 class="sub" id="lsd-jor6">💠 JOR6</h3>
+      <div class="grid">
+      <div class="card">
+        <div class="media" data-media="SUBSTITUA_AQUI_SUPREMO">
+          <img src="https://drive.google.com/thumbnail?id=1pptUa0iFAJPrgF7I0I24YOp9GxpAc1wZ&sz=w1000" alt="Supremo" loading="lazy"
+               onerror="this.parentElement.classList.add('sem-media'); this.remove();">
+          <div class="media-fallback">📷<br><small>foto em breve</small></div>
+        </div>
+        <div class="info">
+          <h3>✨ Supremo </h3>
+          <p>Cristal JOR6.</p>
+          <table>
+            <thead><tr><th>Dosagem</th><th>Preço</th></tr></thead>
+            <tbody><tr><td>150ug</td><td class="price">R$ 250,00/un<br><small class="total">Total: R$ 250,00</small></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="media" data-media="SUBSTITUA_AQUI_ANOTHER">
+          <img src="https://drive.google.com/thumbnail?id=1P6034hc9G2cuUY1f3gBmhKkZcxNRddgg&sz=w1000" alt="Another" loading="lazy"
+               onerror="this.parentElement.classList.add('sem-media'); this.remove();">
+          <div class="media-fallback">📷<br><small>foto em breve</small></div>
+        </div>
+        <div class="info">
+          <h3>✨ Another </h3>
+          <p>Cristal JOR6.</p>
+          <table>
+            <thead><tr><th>Dosagem</th><th>Preço</th></tr></thead>
+            <tbody><tr><td>250ug</td><td class="price">R$ 450,00/un<br><small class="total">Total: R$ 450,00</small></td></tr></tbody>
+          </table>
+        </div>
+      </div></div>
+      <h3 class="sub" id="lsd-diamond-fluffy">💠 DIAMOND FLUFFY</h3>
+      <div class="grid">
+      <div class="card">
+        <div class="media" data-media="SUBSTITUA_AQUI_NICOLE">
+          <img src="https://drive.google.com/thumbnail?id=1e1U54PQGpdxrSnDoqwA6c4l4yIIjQiRT&sz=w1000" alt="Nicole" loading="lazy"
+               onerror="this.parentElement.classList.add('sem-media'); this.remove();">
+          <div class="media-fallback">📷<br><small>foto em breve</small></div>
+        </div>
+        <div class="info">
+          <h3>✨ Nicole </h3>
+          <p>Cristal Diamond Fluffy.</p>
+          <table>
+            <thead><tr><th>Dosagem</th><th>Preço</th></tr></thead>
+            <tbody><tr><td>150ug</td><td class="price">R$ 270,00/un<br><small class="total">Total: R$ 270,00</small></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="media" data-media="SUBSTITUA_AQUI_VALENTINA">
+          <img src="https://drive.google.com/thumbnail?id=1qvXsxA7TUvoZctZukur8kDiRvPDs2_gT&sz=w1000" alt="Valentina" loading="lazy"
+               onerror="this.parentElement.classList.add('sem-media'); this.remove();">
+          <div class="media-fallback">📷<br><small>foto em breve</small></div>
+        </div>
+        <div class="info">
+          <h3>✨ Valentina </h3>
+          <p>Cristal Diamond Fluffy.</p>
+          <table>
+            <thead><tr><th>Dosagem</th><th>Preço</th></tr></thead>
+            <tbody><tr><td>250ug</td><td class="price">R$ 400,00/un<br><small class="total">Total: R$ 400,00</small></td></tr></tbody>
+          </table>
+        </div>
+      </div></div>
+      <h3 class="sub" id="lsd-joy-rider">💠 JOY RIDER</h3>
+      <div class="grid">
+      <div class="card">
+        <div class="media" data-media="SUBSTITUA_AQUI_SUPER_JOY">
+          <img src="https://drive.google.com/thumbnail?id=1EYiqAg05hsrJFke-T0GufwIcAE2TLolt&sz=w1000" alt="Super Joy" loading="lazy"
+               onerror="this.parentElement.classList.add('sem-media'); this.remove();">
+          <div class="media-fallback">📷<br><small>foto em breve</small></div>
+        </div>
+        <div class="info">
+          <h3>💎 Super Joy </h3>
+          <p>Cristal Joy Rider.</p>
+          <table>
+            <thead><tr><th>Dosagem</th><th>Preço</th></tr></thead>
+            <tbody><tr><td>250ug</td><td class="price">R$ 400,00/un<br><small class="total">Total: R$ 400,00</small></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="media" data-media="SUBSTITUA_AQUI_JOE_FENTON">
+          <img src="https://drive.google.com/thumbnail?id=1djxz9PXG55EsJQ3NMrv5MjxS79CopCmZ&sz=w1000" alt="Joe Fenton" loading="lazy"
+               onerror="this.parentElement.classList.add('sem-media'); this.remove();">
+          <div class="media-fallback">📷<br><small>foto em breve</small></div>
+        </div>
+        <div class="info">
+          <h3>💎 Joe Fenton </h3>
+          <p>Cristal Joy Rider.</p>
+          <table>
+            <thead><tr><th>Dosagem</th><th>Preço</th></tr></thead>
+            <tbody><tr><td>320ug</td><td class="price">R$ 480,00/un<br><small class="total">Total: R$ 480,00</small></td></tr></tbody>
+          </table>
+        </div>
+      </div></div>
+      <h3 class="sub" id="lsd-califórnia-white-fluffy">💠 CALIFÓRNIA WHITE FLUFFY</h3>
+      <div class="grid">
+      <div class="card">
+        <div class="media" data-media="SUBSTITUA_AQUI_ÁCID_300">
+          <img src="https://drive.google.com/thumbnail?id=1bdDf5-TRoYq6F8kVMUzZhml0ct_E82dy&sz=w1000" alt="Ácid 300" loading="lazy"
+               onerror="this.parentElement.classList.add('sem-media'); this.remove();">
+          <div class="media-fallback">📷<br><small>foto em breve</small></div>
+        </div>
+        <div class="info">
+          <h3>💎 Ácid 300 </h3>
+          <p>Cristal Califórnia White Fluffy.</p>
+          <table>
+            <thead><tr><th>Dosagem</th><th>Preço</th></tr></thead>
+            <tbody><tr><td>300ug</td><td class="price">R$ 450,00/un<br><small class="total">Total: R$ 450,00</small></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="media" data-media="SUBSTITUA_AQUI_ÁCID_500">
+          <img src="https://drive.google.com/thumbnail?id=1-2CurjEdmPcktbrDTtgy6iyqy2sIvC0U&sz=w1000" alt="Ácid 500" loading="lazy"
+               onerror="this.parentElement.classList.add('sem-media'); this.remove();">
+          <div class="media-fallback">📷<br><small>foto em breve</small></div>
+        </div>
+        <div class="info">
+          <h3>💎 Ácid 500 <span class="badge esgotado">ESGOTADO</span></h3>
+          <p>Cristal Califórnia White Fluffy.</p>
+          <table>
+            <thead><tr><th>Dosagem</th><th>Preço</th></tr></thead>
+            <tbody><tr><td>500ug</td><td class="price">R$ 630,00/un<br><small class="total">Total: R$ 630,00</small></td></tr></tbody>
+          </table>
+        </div>
+      </div></div>
+      <h3 class="sub" id="lsd-white-needlepoint">💠 WHITE NEEDLEPOINT</h3>
+      <div class="grid">
+      <div class="card">
+        <div class="media" data-media="SUBSTITUA_AQUI_FOOD_OF_THE_GODS">
+          <img src="https://drive.google.com/thumbnail?id=1Fh53bv7_5YzorVlEGlfcAwpSW8HEjqyY&sz=w1000" alt="Food of the Gods" loading="lazy"
+               onerror="this.parentElement.classList.add('sem-media'); this.remove();">
+          <div class="media-fallback">📷<br><small>foto em breve</small></div>
+        </div>
+        <div class="info">
+          <h3>💎 Food of the Gods </h3>
+          <p>Cristal White Needlepoint.</p>
+          <table>
+            <thead><tr><th>Dosagem</th><th>Preço</th></tr></thead>
+            <tbody><tr><td>320ug</td><td class="price">R$ 450,00/un<br><small class="total">Total: R$ 450,00</small></td></tr></tbody>
+          </table>
+        </div>
+      </div></div>
+      <h3 class="sub" id="lsd-gdf-needlepoint-99%">💠 GDF NEEDLEPOINT 99%</h3>
+      <div class="grid">
+      <div class="card">
+        <div class="media" data-media="SUBSTITUA_AQUI_HERON">
+          <img src="https://drive.google.com/thumbnail?id=1K0zfnLFLelCAIqXtNpV-Q8ml-xeBSvpN&sz=w1000" alt="HERON" loading="lazy"
+               onerror="this.parentElement.classList.add('sem-media'); this.remove();">
+          <div class="media-fallback">📷<br><small>foto em breve</small></div>
+        </div>
+        <div class="info">
+          <h3>⚡️ HERON <span class="badge novo">NOVIDADE</span></h3>
+          <p>Needlepoint Edição Especial.</p>
+          <table>
+            <thead><tr><th>Dosagem</th><th>Preço</th></tr></thead>
+            <tbody><tr><td>700ug · 1 card</td><td class="price">R$ 700,00/un<br><small class="total">Total: R$ 700,00</small></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="media" data-media="SUBSTITUA_AQUI_JOY_X_GDF">
+          <img src="https://drive.google.com/thumbnail?id=1b_YTEXOloc9CA_pH9Ze88hJr2mIL8Cu6&sz=w1000" alt="JOY x GDF" loading="lazy"
+               onerror="this.parentElement.classList.add('sem-media'); this.remove();">
+          <div class="media-fallback">📷<br><small>foto em breve</small></div>
+        </div>
+        <div class="info">
+          <h3>🎩 JOY x GDF <span class="badge novo">NOVIDADE</span></h3>
+          <p>Needlepoint Edição Especial.</p>
+          <table>
+            <thead><tr><th>Dosagem</th><th>Preço</th></tr></thead>
+            <tbody><tr><td>900ug · 1 card</td><td class="price">R$ 850,00/un<br><small class="total">Total: R$ 850,00</small></td></tr></tbody>
+          </table>
+        </div>
+      </div></div>
+      <h3 class="sub" id="lsd-orange-sunshine">💠 ORANGE SUNSHINE</h3>
+      <div class="grid">
+      <div class="card">
+        <div class="media" data-media="SUBSTITUA_AQUI_EXPANSION_500_-_CRISTAL">
+          <img src="https://drive.google.com/thumbnail?id=1Y5zWRFqx6Brd7aBlN6BIpD1X7VvynBrq&sz=w1000" alt="Expansion 500 — Cristal" loading="lazy"
+               onerror="this.parentElement.classList.add('sem-media'); this.remove();">
+          <div class="media-fallback">📷<br><small>foto em breve</small></div>
+        </div>
+        <div class="info">
+          <h3>😱 Expansion 500 — Cristal </h3>
+          <p>Cristal Orange Sunshine.</p>
+          <table>
+            <thead><tr><th>Dosagem</th><th>Preço</th></tr></thead>
+            <tbody><tr><td>500ug · 1 card</td><td class="price">R$ 630,00/un<br><small class="total">Total: R$ 630,00</small></td></tr></tbody>
+          </table>
+        </div>
+      </div></div>
+      <h3 class="sub" id="lsd-swiss-bliss">💠 SWISS BLISS</h3>
+      <div class="grid">
+      <div class="card">
+        <div class="media" data-media="SUBSTITUA_AQUI_FLORESTA">
+          <img src="https://drive.google.com/thumbnail?id=11td4kxT4ESU7PmZ-iq1GUidV6XLu6dG0&sz=w1000" alt="Floresta" loading="lazy"
+               onerror="this.parentElement.classList.add('sem-media'); this.remove();">
+          <div class="media-fallback">📷<br><small>foto em breve</small></div>
+        </div>
+        <div class="info">
+          <h3>🌳 Floresta </h3>
+          <p>Húngaro · todas as artes.</p>
+          <table>
+            <thead><tr><th>Dosagem</th><th>Preço</th></tr></thead>
+            <tbody><tr><td>150ug</td><td class="price">R$ 250,00/un<br><small class="total">Total: R$ 250,00</small></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="media" data-media="SUBSTITUA_AQUI_ONÇA">
+          <img src="https://drive.google.com/thumbnail?id=1PfPGoUjaROMk2elGLHIw26b-GbM1lvvi&sz=w1000" alt="Onça" loading="lazy"
+               onerror="this.parentElement.classList.add('sem-media'); this.remove();">
+          <div class="media-fallback">📷<br><small>foto em breve</small></div>
+        </div>
+        <div class="info">
+          <h3>🐆 Onça </h3>
+          <p>Húngaro · todas as artes.</p>
+          <table>
+            <thead><tr><th>Dosagem</th><th>Preço</th></tr></thead>
+            <tbody><tr><td>200ug</td><td class="price">R$ 300,00/un<br><small class="total">Total: R$ 300,00</small></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="media" data-media="SUBSTITUA_AQUI_EINSTEN">
+          <img src="https://drive.google.com/thumbnail?id=1e2c9fH_P0XeuI9i_K9cLjPu7pH89bc8Y&sz=w1000" alt="Einsten" loading="lazy"
+               onerror="this.parentElement.classList.add('sem-media'); this.remove();">
+          <div class="media-fallback">📷<br><small>foto em breve</small></div>
+        </div>
+        <div class="info">
+          <h3>🤪 Einsten </h3>
+          <p>Húngaro · todas as artes.</p>
+          <table>
+            <thead><tr><th>Dosagem</th><th>Preço</th></tr></thead>
+            <tbody><tr><td>333ug</td><td class="price">R$ 420,00/un<br><small class="total">Total: R$ 420,00</small></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="media" data-media="SUBSTITUA_AQUI_ABACAXI">
+          <img src="https://drive.google.com/thumbnail?id=1_fX7_U4cEibTcLsnnLQnrrA32zB-bK00&sz=w1000" alt="Abacaxi" loading="lazy"
+               onerror="this.parentElement.classList.add('sem-media'); this.remove();">
+          <div class="media-fallback">📷<br><small>foto em breve</small></div>
+        </div>
+        <div class="info">
+          <h3>🍍 Abacaxi </h3>
+          <p>Húngaro · todas as artes.</p>
+          <table>
+            <thead><tr><th>Dosagem</th><th>Preço</th></tr></thead>
+            <tbody><tr><td>300ug</td><td class="price">R$ 400,00/un<br><small class="total">Total: R$ 400,00</small></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="media" data-media="SUBSTITUA_AQUI_FLY_PIG">
+          <img src="https://drive.google.com/thumbnail?id=1FRyExnU2fiSKdze67sWV3yUFbPEnhxrL&sz=w1000" alt="Fly Pig" loading="lazy"
+               onerror="this.parentElement.classList.add('sem-media'); this.remove();">
+          <div class="media-fallback">📷<br><small>foto em breve</small></div>
+        </div>
+        <div class="info">
+          <h3>🐷 Fly Pig </h3>
+          <p>Húngaro · todas as artes.</p>
+          <table>
+            <thead><tr><th>Dosagem</th><th>Preço</th></tr></thead>
+            <tbody><tr><td>400ug</td><td class="price">R$ 500,00/un<br><small class="total">Total: R$ 500,00</small></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="media" data-media="SUBSTITUA_AQUI_JESUS">
+          <img src="https://drive.google.com/thumbnail?id=1EsDW3mpHwPip1UNAQyUgEGx41mH47DZf&sz=w1000" alt="Jesus" loading="lazy"
+               onerror="this.parentElement.classList.add('sem-media'); this.remove();">
+          <div class="media-fallback">📷<br><small>foto em breve</small></div>
+        </div>
+        <div class="info">
+          <h3>🙏🏻 Jesus </h3>
+          <p>Húngaro · todas as artes.</p>
+          <table>
+            <thead><tr><th>Dosagem</th><th>Preço</th></tr></thead>
+            <tbody><tr><td>500ug</td><td class="price">R$ 600,00/un<br><small class="total">Total: R$ 600,00</small></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="media" data-media="SUBSTITUA_AQUI_HORA_DA_AVENTURA">
+          <img src="https://drive.google.com/thumbnail?id=1iFZ4DyGbRDRY5yiA9QiuwPN_7yma5BC2&sz=w1000" alt="Hora da Aventura" loading="lazy"
+               onerror="this.parentElement.classList.add('sem-media'); this.remove();">
+          <div class="media-fallback">📷<br><small>foto em breve</small></div>
+        </div>
+        <div class="info">
+          <h3>⏰ Hora da Aventura </h3>
+          <p>500ug · Swiss Bliss.</p>
+          <table>
+            <thead><tr><th>Dosagem</th><th>Preço</th></tr></thead>
+            <tbody><tr><td>500ug · 1 card</td><td class="price">R$ 600,00/un<br><small class="total">Total: R$ 600,00</small></td></tr></tbody>
+          </table>
+        </div>
+      </div></div>
+      <h3 class="sub" id="lsd-dr.-seuss-/-cat-in-the-hat">💠 DR. SEUSS / CAT IN THE HAT</h3>
+      <div class="grid">
+      <div class="card">
+        <div class="media" data-media="SUBSTITUA_AQUI_DS_3.0_XTAL_99.1%">
+          <img src="https://drive.google.com/thumbnail?id=1hNzjq7OuL89n26tuGBJzcsuX0WAW7qgw&sz=w1000" alt="DS 3.0 Xtal 99.1%" loading="lazy"
+               onerror="this.parentElement.classList.add('sem-media'); this.remove();">
+          <div class="media-fallback">📷<br><small>foto em breve</small></div>
+        </div>
+        <div class="info">
+          <h3>🐱 DS 3.0 Xtal 99.1% </h3>
+          <p>Cristal DS 3.0 xtal 99.1%.</p>
+          <table>
+            <thead><tr><th>Dosagem</th><th>Preço</th></tr></thead>
+            <tbody><tr><td>200ug · 1 card</td><td class="price">R$ 650,00/un<br><small class="total">Total: R$ 650,00</small></td></tr></tbody>
+          </table>
+        </div>
+      </div></div>
+      <h3 class="sub" id="lsd-califórnia-sunshine">💠 MEDICINAS SAGRADAS<br><small class="subsub">Califórnia Sunshine</small></h3>
+      <div class="grid">
+      <div class="card">
+        <div class="media" data-media="SUBSTITUA_AQUI_MALABARISTA">
+          <img src="https://drive.google.com/thumbnail?id=12EYmVCYsuwPmyIi7obJYfLf03vvbK9P2&sz=w1000" alt="Malabarista" loading="lazy"
+               onerror="this.parentElement.classList.add('sem-media'); this.remove();">
+          <div class="media-fallback">📷<br><small>foto em breve</small></div>
+        </div>
+        <div class="info">
+          <h3>🤹 Malabarista </h3>
+          <p>Medicinas Sagradas<br>Califórnia Sunshine</p>
+          <table>
+            <thead><tr><th>Dosagem</th><th>Preço</th></tr></thead>
+            <tbody><tr><td>150ug</td><td class="price">R$ 230,00/un<br><small class="total">Total: R$ 230,00</small></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="media" data-media="SUBSTITUA_AQUI_FLOR_DA_VIDA">
+          <img src="https://drive.google.com/thumbnail?id=1aNKVyZXzUnNFGnGTAHm2pVXqJcJGFjEp&sz=w1000" alt="Flor da Vida" loading="lazy"
+               onerror="this.parentElement.classList.add('sem-media'); this.remove();">
+          <div class="media-fallback">📷<br><small>foto em breve</small></div>
+        </div>
+        <div class="info">
+          <h3>🌷 Flor da Vida </h3>
+          <p>Medicinas Sagradas<br>Califórnia Sunshine</p>
+          <table>
+            <thead><tr><th>Dosagem</th><th>Preço</th></tr></thead>
+            <tbody><tr><td>225ug</td><td class="price">R$ 350,00/un<br><small class="total">Total: R$ 350,00</small></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="media" data-media="SUBSTITUA_AQUI_TUPÃ">
+          <img src="https://drive.google.com/thumbnail?id=1Enu7PgRzeQmzVDqGlh99mB4LTPzX8F2w&sz=w1000" alt="Tupã" loading="lazy"
+               onerror="this.parentElement.classList.add('sem-media'); this.remove();">
+          <div class="media-fallback">📷<br><small>foto em breve</small></div>
+        </div>
+        <div class="info">
+          <h3>🙀 Tupã </h3>
+          <p>Medicinas Sagradas<br>Califórnia Sunshine</p>
+          <table>
+            <thead><tr><th>Dosagem</th><th>Preço</th></tr></thead>
+            <tbody><tr><td>400ug</td><td class="price">R$ 500,00/un<br><small class="total">Total: R$ 500,00</small></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="media" data-media="SUBSTITUA_AQUI_THE_VISION">
+          <img src="https://drive.google.com/thumbnail?id=1nh6MZjMHe540XHcVMBhFqJdY-DXVxU1C&sz=w1000" alt="The Vision" loading="lazy"
+               onerror="this.parentElement.classList.add('sem-media'); this.remove();">
+          <div class="media-fallback">📷<br><small>foto em breve</small></div>
+        </div>
+        <div class="info">
+          <h3>🔸 The Vision </h3>
+          <p>Medicinas Sagradas<br>Califórnia Sunshine</p>
+          <table>
+            <thead><tr><th>Dosagem</th><th>Preço</th></tr></thead>
+            <tbody><tr><td>115ug</td><td class="price">R$ 220,00/un<br><small class="total">Total: R$ 220,00</small></td></tr></tbody>
+          </table>
+        </div>
+      </div></div>
+      <h3 class="sub" id="lsd-cristal-white-fluffy">💠 CRISTAL WHITE FLUFFY</h3>
+      <div class="grid">
+      <div class="card">
+        <div class="media" data-media="SUBSTITUA_AQUI_TUBO_120UG">
+          <img src="https://drive.google.com/thumbnail?id=1t9LDIiImXmnTO5B9PmhuGKFqeDjGQyNm&sz=w1000" alt="Tubo 120ug" loading="lazy"
+               onerror="this.parentElement.classList.add('sem-media'); this.remove();">
+          <div class="media-fallback">📷<br><small>foto em breve</small></div>
+        </div>
+        <div class="info">
+          <h3>💧 Tubo 120ug </h3>
+          <p>Fabricação do húngaro.</p>
+          <table>
+            <thead><tr><th>Dosagem</th><th>Preço</th></tr></thead>
+            <tbody><tr><td>1 tubo</td><td class="price">R$ 600,00/un<br><small class="total">Total: R$ 600,00</small></td></tr><tr><td>5 tubos</td><td class="price">R$ 570,00/un<br><small class="total">Total: R$ 570,00</small></td></tr><tr><td>10 tubos</td><td class="price">R$ 550,00/un<br><small class="total">Total: R$ 550,00</small></td></tr></tbody>
+          </table>
+        </div>
+      </div></div>
+      <h3 class="sub" id="lsd-gummies-acid">💠 GUMMIES ACID</h3>
+      <div class="grid">
+      <div class="card">
+        <div class="media" data-media="SUBSTITUA_AQUI_ACID_200_-_CALIFÓRNIA_WHITE_FLUFF">
+          <img src="https://drive.google.com/thumbnail?id=1OFr8IsJetKkyajLYe1xlvQCVYC-Pf72J&sz=w1000" alt="Acid 200 — Califórnia White Fluff" loading="lazy"
+               onerror="this.parentElement.classList.add('sem-media'); this.remove();">
+          <div class="media-fallback">📷<br><small>foto em breve</small></div>
+        </div>
+        <div class="info">
+          <h3>🍬 Acid 200 — Califórnia White Fluff </h3>
+          <p>Gummies Acid.</p>
+          <table>
+            <thead><tr><th>Dosagem</th><th>Preço</th></tr></thead>
+            <tbody><tr><td>1 pack · 25 unid · 200ug</td><td class="price">R$ 450,00/un<br><small class="total">Total: R$ 450,00</small></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="media" data-media="SUBSTITUA_AQUI_ACID_300_-_CALIFÓRNIA_WHITE_FLUFF">
+          <img src="https://drive.google.com/thumbnail?id=1DbRp3OAkUi3keRcvM-LnmWeXEa4fYGwI&sz=w1000" alt="Acid 300 — Califórnia White Fluff" loading="lazy"
+               onerror="this.parentElement.classList.add('sem-media'); this.remove();">
+          <div class="media-fallback">📷<br><small>foto em breve</small></div>
+        </div>
+        <div class="info">
+          <h3>🍬 Acid 300 — Califórnia White Fluff </h3>
+          <p>Gummies Acid.</p>
+          <table>
+            <thead><tr><th>Dosagem</th><th>Preço</th></tr></thead>
+            <tbody><tr><td>1 pack · 25 unid · 300ug</td><td class="price">R$ 550,00/un<br><small class="total">Total: R$ 550,00</small></td></tr></tbody>
+          </table>
+        </div>
+      </div></div>
+    </section>
+    <section id="md">
+      <h2>💎 M.D</h2>
+      <div class="grid">
+      <div class="card">
+        <div class="media" data-media="SUBSTITUA_AQUI_M.D_DUTCH_-_O_ORIGINAL">
+          <img src="https://drive.google.com/thumbnail?id=1enPy4TcnPGUHQ9T1OgrrTvgJyxpsiFpW&sz=w1000" alt="M.D DUTCH — O Original" loading="lazy"
+               onerror="this.parentElement.classList.add('sem-media'); this.remove();">
+          <div class="media-fallback">📷<br><small>foto em breve</small></div>
+        </div>
+        <div class="info">
+          <h3>💎 M.D DUTCH — O Original </h3>
+          <p>Pouquíssima quantidade disponível 🚨 Mais de 100g não diminui o valor.</p>
+          <table>
+            <thead><tr><th>Quantidade</th><th>Preço</th></tr></thead>
+            <tbody><tr><td>10g</td><td class="price">R$ 60,00/un<br><small class="total">Total: R$ 600,00</small></td></tr><tr><td>25g</td><td class="price">R$ 55,00/un<br><small class="total">Total: R$ 1.375,00</small></td></tr><tr><td>50g</td><td class="price">R$ 52,00/un<br><small class="total">Total: R$ 2.600,00</small></td></tr><tr><td>100g</td><td class="price">R$ 50,00/un<br><small class="total">Total: R$ 5.000,00</small></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="media" data-media="SUBSTITUA_AQUI_M.D.A_PURO">
+          <img src="https://drive.google.com/thumbnail?id=1Dwq740oeNrrj_ydysSph9fPXjErtM1nY&sz=w1000" alt="M.D.A PURO" loading="lazy"
+               onerror="this.parentElement.classList.add('sem-media'); this.remove();">
+          <div class="media-fallback">📷<br><small>foto em breve</small></div>
+        </div>
+        <div class="info">
+          <h3>💎 M.D.A PURO </h3>
+          
+          <table>
+            <thead><tr><th>Quantidade</th><th>Preço</th></tr></thead>
+            <tbody><tr><td>10g</td><td class="price">R$ 40,00/un<br><small class="total">Total: R$ 400,00</small></td></tr><tr><td>25g</td><td class="price">R$ 35,00/un<br><small class="total">Total: R$ 875,00</small></td></tr><tr><td>50g</td><td class="price">R$ 30,00/un<br><small class="total">Total: R$ 1.500,00</small></td></tr><tr><td>100g</td><td class="price">R$ 28,00/un<br><small class="total">Total: R$ 2.800,00</small></td></tr></tbody>
+          </table>
+        </div>
+      </div></div>
+    </section>
+    <section id="balas">
+      <h2>🍬 BALAS</h2>
+      <div class="grid">
+      <div class="card">
+        <div class="media" data-media="MDA_300MG_PRINGLES">
+          <img src="https://drive.google.com/thumbnail?id=1ksiBMMFij5_OiLjY46zKysWqf8K0fxmo&sz=w1000" alt="MDA 300mg Pringles" loading="lazy"
+               onerror="this.parentElement.classList.add('sem-media'); this.remove();">
+          <div class="media-fallback">📷<br><small>foto em breve</small></div>
+        </div>
+        <div class="info">
+          <h3>🍬 300mg MDA — PRINGLES</h3>
+          <p>Mesmo lab das Off White / Sonic.</p>
+          <table>
+            <thead><tr><th>Quantidade</th><th>Preço</th></tr></thead>
+            <tbody><tr><td>50 unid</td><td class="price">R$ 400,00</td></tr><tr><td>100 unid</td><td class="price">R$ 650,00</td></tr><tr><td>500 unid</td><td class="price">R$ 2.750,00</td></tr><tr><td>1.000 unid</td><td class="price">R$ 4.500,00</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="media" data-media="MDA_300MG_ABACAXI">
+          <img src="https://drive.google.com/thumbnail?id=1LZ7g-dLaC468JpH2UbP0Z9HjxWWv-kfC&sz=w1000" alt="MDA 300mg Abacaxi" loading="lazy"
+               onerror="this.parentElement.classList.add('sem-media'); this.remove();">
+          <div class="media-fallback">📷<br><small>foto em breve</small></div>
+        </div>
+        <div class="info">
+          <h3>🍬 300mg MDA — ABACAXI SP</h3>
+          <p>Mesmo lab das Off White / Sonic.</p>
+          <table>
+            <thead><tr><th>Quantidade</th><th>Preço</th></tr></thead>
+            <tbody><tr><td>50 unid</td><td class="price">R$ 400,00</td></tr><tr><td>100 unid</td><td class="price">R$ 650,00</td></tr><tr><td>500 unid</td><td class="price">R$ 2.750,00</td></tr><tr><td>1.000 unid</td><td class="price">R$ 4.500,00</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+        <div class="info">
+          <h3>🍬 300mg MDA — Pringles / Abacaxi SP </h3>
+          <p>Mesmo lab das Off White / Sonic.</p>
+          <table>
+            <thead><tr><th>Quantidade</th><th>Preço</th></tr></thead>
+            <tbody><tr><td>50 unid</td><td class="price">R$ 400,00</td></tr><tr><td>100 unid</td><td class="price">R$ 650,00</td></tr><tr><td>500 unid</td><td class="price">R$ 2.750,00</td></tr><tr><td>1.000 unid</td><td class="price">R$ 4.500,00</td></tr></tbody>
+          </table>
+        </div>
+      </div></div>
+    
+      
+      
+    </section>
+
+
+    <section id="balasmdma">
+      <h2>🍬 BALAS DE M.D.M.A</h2>
+      <div class="grid"><div class="card">
+        <div class="media" data-media="OFF_WHITE_300MG_MDMA">
+          <img src="https://drive.google.com/thumbnail?id=1t7BBcDShyyavbpTfIlhY1xZfop_-W_qT&sz=w1000" alt="Off White 300mg MDMA" loading="lazy"
+               onerror="this.parentElement.classList.add('sem-media'); this.remove();">
+          <div class="media-fallback">📷<br><small>foto em breve</small></div>
+        </div>
+        <div class="info">
+          <h3>🍬 OFF WHITE — 300mg MDMA</h3>
+          <p></p>
+          <table>
+            <thead><tr><th>Quantidade</th><th>Preço</th></tr></thead>
+            <tbody>
+              <tr><td>20 unid</td><td class="price">R$ 520,00</td></tr>
+              <tr><td>50 unid</td><td class="price">R$ 1.150,00</td></tr>
+              <tr><td>100 unid</td><td class="price">R$ 2.000,00</td></tr>
+              <tr><td>500 unid</td><td class="price">R$ 8.500,00</td></tr>
+              <tr><td>1.000 unid</td><td class="price">R$ 15.500,00</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="media" data-media="SONIC_300MG_MDMA">
+          <img src="https://drive.google.com/thumbnail?id=13vTKREh8Cta3lNSLkm7TYXeqtpbhPCpF&sz=w1000" alt="Sonic 300mg MDMA" loading="lazy"
+               onerror="this.parentElement.classList.add('sem-media'); this.remove();">
+          <div class="media-fallback">📷<br><small>foto em breve</small></div>
+        </div>
+        <div class="info">
+          <h3>🍬 SONIC — 300mg MDMA</h3>
+          <p></p>
+          <table>
+            <thead><tr><th>Quantidade</th><th>Preço</th></tr></thead>
+            <tbody>
+              <tr><td>20 unid</td><td class="price">R$ 520,00</td></tr>
+              <tr><td>50 unid</td><td class="price">R$ 1.150,00</td></tr>
+              <tr><td>100 unid</td><td class="price">R$ 2.000,00</td></tr>
+              <tr><td>500 unid</td><td class="price">R$ 8.500,00</td></tr>
+              <tr><td>1.000 unid</td><td class="price">R$ 15.500,00</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div></div>
+    </section>
+
+<div class="milhas" id="milhas">
+  <h2>🎫 VALORES ATUALIZADOS — MILHAS</h2>
+  <p class="nota">Para meia milha: valor da milha ÷ 2 + R$ 400.</p>
+  <table style="max-width:480px">
+    <thead><tr><th>Arte</th><th>Milhas</th></tr></thead>
+    <tbody><tr><td>Floresta 🌳</td><td class="price">6k</td></tr><tr><td>Onça 🐆</td><td class="price">7,5k</td></tr><tr><td>Abacaxi 🍍</td><td class="price">11k</td></tr><tr><td>Fly Pig 🐷</td><td class="price">13k</td></tr><tr><td>Jesus 🙏</td><td class="price">16k</td></tr><tr><td>Einsten 🤪</td><td class="price">10,5k</td></tr><tr><td>Hora da Aventura ⏰</td><td class="price">16,5k</td></tr><tr><td>Flor da Vida 🌷</td><td class="price">7,5k</td></tr><tr><td>Tupã 🫨</td><td class="price">12k</td></tr><tr><td>The Vision 🔸</td><td class="price">5k</td></tr><tr><td>Joe Fenton 💎</td><td class="price">14,5k</td></tr><tr><td>Super Joy 💎</td><td class="price">11,5k</td></tr></tbody>
+  </table>
+</div>
+
+<div class="envios" id="envios">
+  <h2>🚚 ENVIO &amp; RETIRADA</h2>
+
+  <h3 class="sub">📌 FRETE FIXO — LSD</h3>
+  <table class="frete">
+    <thead><tr><th>Destino</th><th>Valor</th></tr></thead>
+    <tbody>
+      <tr><td>SP Capital</td><td class="price">R$ 60,00/un<br><small class="total">Total: R$ 60,00</small></td></tr>
+      <tr><td>SP Interior</td><td class="price">R$ 70,00/un<br><small class="total">Total: R$ 70,00</small></td></tr>
+      <tr><td>Sudeste / Sul / Centro-Oeste</td><td class="price">R$ 90,00/un<br><small class="total">Total: R$ 90,00</small></td></tr>
+      <tr><td>Tocantins / Manaus</td><td class="price">R$ 110,00/un<br><small class="total">Total: R$ 110,00</small></td></tr>
+      <tr><td>Nordeste</td><td class="price">R$ 120,00/un<br><small class="total">Total: R$ 120,00</small></td></tr>
+      <tr><td>Norte</td><td class="price">R$ 130,00/un<br><small class="total">Total: R$ 130,00</small></td></tr>
+      <tr><td>Carta registrada 🐢</td><td class="price">R$ 35,00/un<br><small class="total">Total: R$ 35,00</small></td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="sub">📦 OUTROS PRODUTOS</h3>
+  <table class="frete">
+    <thead><tr><th>Modalidade</th><th>Valor</th></tr></thead>
+    <tbody>
+      <tr><td>Frete fixo Sedex</td><td class="price">R$ 150,00/un<br><small class="total">Total: R$ 150,00</small></td></tr>
+      <tr><td>Transportadora</td><td class="price">R$ 200,00/un<br><small class="total">Total: R$ 200,00</small></td></tr>
+    </tbody>
+  </table>
+
+  <ul class="extra">
+    <li><b>Retirada em SP</b><span>Taxa R$ 50 · mínimo R$ 1.000 (placas)</span></li>
+    <li><b>Entrega</b><span>Consultar taxa</span></li>
+    <li><b>Pagamento</b><span>Pix · depósito · espécie 💸</span></li>
+    <li><b>Envios</b><span>Terças e quintas · saindo de SP ✈️</span></li>
+  </ul>
+</div>
+
+<div class="reship">
+  <p>❌ NÃO EXISTE RESHIP DE NENHUM MATERIAL ❌</p>
+</div>
+
+<footer>Preço justo e qualidade ✅ · Todo o material sai junto 🚀</footer>
+
+
+<script>
+// Cards com vídeo: o <img> vira placeholder de capa; ao clicar, vira <iframe> do Drive
+document.querySelectorAll('.media[data-video="true"]').forEach(function(m){
+  var id = m.getAttribute('data-drive-id');
+  if(!id) return;
+  m.classList.add('video');
+  var img = m.querySelector('img');
+  if(img){
+    img.style.cursor='pointer';
+    img.title='▶ Tocar vídeo';
+    img.addEventListener('click', function(){
+      var f = document.createElement('iframe');
+      f.src = 'https://drive.google.com/file/d/'+id+'/preview';
+      f.allow = 'autoplay';
+      f.loading = 'lazy';
+      m.innerHTML = '';
+      m.appendChild(f);
+    });
+  }
+});
+</script>
+</body>
+</html>
